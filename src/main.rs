@@ -1,5 +1,6 @@
 mod calibration;
 mod stone_game;
+mod stone_game_nom;
 
 use clap::Parser;
 use clap::Subcommand;
