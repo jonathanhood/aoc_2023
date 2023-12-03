@@ -1,4 +1,7 @@
+#![allow(dead_code)]
+
 mod calibration;
+mod engine_schematic;
 mod stone_game;
 mod stone_game_nom;
 
@@ -30,6 +33,12 @@ enum Command {
     Day2Part2 {
         input_path: String,
     },
+    Day3 {
+        input_path: String,
+    },
+    Day3Part2 {
+        input_path: String,
+    }
 }
 
 fn main() {
@@ -70,6 +79,29 @@ fn main() {
             }
 
             println!("Sum of Power: {}", power_sum);
+        }
+        Command::Day3 { input_path } => {
+            let input = std::fs::read_to_string(input_path).unwrap();
+            let part_numbers = engine_schematic::part_numbers_in_corpus(&input);
+
+            let mut pn_sum = 0;
+            for pn in part_numbers {
+                pn_sum += pn.number;
+            }
+
+            println!("Sum of Part Numbers: {}", pn_sum);
+        }
+
+        Command::Day3Part2 { input_path } => {
+            let input = std::fs::read_to_string(input_path).unwrap();
+            let gears = engine_schematic::gears_in_corpus(&input);
+
+            let mut gear_ratio_sum = 0;
+            for gear in gears {
+                gear_ratio_sum += gear.ratio;
+            }
+
+            println!("Sum of Gear Ratios: {}", gear_ratio_sum);
         }
     }
 }
