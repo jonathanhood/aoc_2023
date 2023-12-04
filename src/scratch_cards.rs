@@ -13,7 +13,8 @@ use nom::sequence::tuple;
 pub struct ScratchCard {
     id: usize,
     winning_numbers: Vec<u32>,
-    my_numbers: Vec<u32>
+    my_numbers: Vec<u32>,
+    num_matching: usize
 }
 
 impl Ord for ScratchCard {
@@ -57,18 +58,16 @@ impl ScratchCard {
             )
         )(input)?;
 
-        Ok((input, ScratchCard { id, winning_numbers, my_numbers }))
-    }
-
-    pub fn num_matching(&self) -> usize {
-        self.winning_numbers
+        let num_matching: usize = winning_numbers
             .iter()
-            .filter(|n| self.my_numbers.contains(n))
-            .count()
+            .filter(|n| my_numbers.contains(n))
+            .count();
+
+        Ok((input, ScratchCard { id, winning_numbers, my_numbers, num_matching }))
     }
 
     pub fn score(&self) -> u32 {
-        let matching_count = self.num_matching();
+        let matching_count = self.num_matching;
 
         if matching_count == 0 {
             0
@@ -97,7 +96,7 @@ pub fn play_game(input: &str) -> usize {
     working_heap.extend(original_cards.iter());
 
     while let Some(card) = working_heap.pop() {
-        let matching_count = card.num_matching();
+        let matching_count = card.num_matching;
         count += 1;
 
         if matching_count > 0 {
