@@ -2,6 +2,7 @@
 
 mod calibration;
 mod engine_schematic;
+mod scratch_cards;
 mod stone_game;
 mod stone_game_nom;
 
@@ -38,7 +39,13 @@ enum Command {
     },
     Day3Part2 {
         input_path: String,
-    }
+    },
+    Day4 {
+        input_path: String,
+    },
+    Day4Part2 {
+        input_path: String,
+    },
 }
 
 fn main() {
@@ -50,7 +57,8 @@ fn main() {
             let calibration = calibration::value_for_corpus(&input);
 
             println!("Calibration: {}", calibration);
-        }
+        },
+
         Command::Day2 {
             red,
             green,
@@ -68,7 +76,8 @@ fn main() {
             }
 
             println!("Sum of Valid IDs: {}", id_sum);
-        }
+        },
+
         Command::Day2Part2 { input_path } => {
             let input = std::fs::read_to_string(input_path).unwrap();
             let games = stone_game::StoneGame::parse_lines(&input);
@@ -79,7 +88,8 @@ fn main() {
             }
 
             println!("Sum of Power: {}", power_sum);
-        }
+        },
+
         Command::Day3 { input_path } => {
             let input = std::fs::read_to_string(input_path).unwrap();
             let part_numbers = engine_schematic::part_numbers_in_corpus(&input);
@@ -90,7 +100,7 @@ fn main() {
             }
 
             println!("Sum of Part Numbers: {}", pn_sum);
-        }
+        },
 
         Command::Day3Part2 { input_path } => {
             let input = std::fs::read_to_string(input_path).unwrap();
@@ -102,6 +112,25 @@ fn main() {
             }
 
             println!("Sum of Gear Ratios: {}", gear_ratio_sum);
+        },
+
+        Command::Day4 { input_path } => {
+            let input = std::fs::read_to_string(input_path).unwrap();
+            let cards = scratch_cards::cards_in_corpus(&input);
+
+            let mut score_sum = 0;
+            for card in cards {
+                score_sum += card.score();
+            }
+
+            println!("Sum of Scores: {}", score_sum);
+        },
+
+        Command::Day4Part2 { input_path } => {
+            let input = std::fs::read_to_string(input_path).unwrap();
+            let cards = scratch_cards::play_game(&input);
+
+            println!("Number of Cards: {}", cards);
         }
     }
 }
