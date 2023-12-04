@@ -92,10 +92,9 @@ pub fn cards_in_corpus(input: &str) -> Vec<ScratchCard> {
 pub fn play_game(input: &str) -> usize {
     let original_cards = cards_in_corpus(input);
     let mut count: usize = 0;
-    let mut working_heap: BinaryHeap<ScratchCard> = BinaryHeap::new();
-    //let mut result_cards: Vec<ScratchCard> = Vec::new();
+    let mut working_heap: BinaryHeap<&ScratchCard> = BinaryHeap::new();
 
-    working_heap.extend(original_cards.iter().cloned());
+    working_heap.extend(original_cards.iter());
 
     while let Some(card) = working_heap.pop() {
         let matching_count = card.num_matching();
@@ -107,7 +106,7 @@ pub fn play_game(input: &str) -> usize {
 
             while original_card_index < original_cards.len() && original_card_index < end_index {
                 let original_card = original_cards.get(original_card_index as usize).expect("index should be valid");
-                working_heap.push(original_card.clone());
+                working_heap.push(original_card);
                 original_card_index += 1;
             }
         }
